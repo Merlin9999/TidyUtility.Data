@@ -1,16 +1,23 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Web;
 using Nuke.Common;
+using Nuke.Common.CI;
 using Nuke.Common.CI.GitHubActions;
+using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 using Serilog;
+using static Nuke.Common.EnvironmentInfo;
+using static Nuke.Common.IO.FileSystemTasks;
+using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 // Nuke Build Documentation: https://nuke.build/docs/introduction/
@@ -131,21 +138,18 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            //DotNetBuild(s => s
-            //    .SetProjectFile(Solution)
-            //    .SetConfiguration(Configuration)
-            //    .EnableNoRestore());
-
             DotNetBuild(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
                 .EnableNoRestore()
                 .SetCopyright(BuildCopyright())
-                .SetVersion(GitVersion.NuGetVersion)
+
+                .SetVersion(GetSafeNuGetVersion())
+                //.SetVersionPrefix(GitVersion.MajorMinorPatch)
+                //.SetVersionSuffix(GitVersion.PreReleaseTag)
+
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetFileVersion(GitVersion.AssemblySemFileVer)
-                .SetVersionPrefix(GitVersion.MajorMinorPatch)
-                .SetVersionSuffix(GitVersion.PreReleaseTag)
                 .AddProperty("IncludeSourceRevisionInInformationalVersion", Configuration != Configuration.Release));
         });
 
@@ -173,11 +177,13 @@ class Build : NukeBuild
                 .EnableNoRestore()
                 .EnableNoBuild()
                 .SetCopyright(BuildCopyright())
-                .SetVersion(GitVersion.NuGetVersionV2)
+
+                .SetVersion(GetSafeNuGetVersion())
+                //.SetVersionPrefix(GitVersion.MajorMinorPatch)
+                //.SetVersionSuffix(GitVersion.PreReleaseTag)
+
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetFileVersion(GitVersion.AssemblySemFileVer)
-                .SetVersionPrefix(GitVersion.MajorMinorPatch)
-                .SetVersionSuffix(GitVersion.PreReleaseTag)
                 .AddProperty("IncludeSourceRevisionInInformationalVersion", Configuration != Configuration.Release)
                 .SetOutputDirectory(OutputDirectory)
             );
@@ -275,6 +281,14 @@ class Build : NukeBuild
         }
 
         return null;
+    }
+
+    string GetSafeNuGetVersion()
+    {
+        // Sometimes NuGetVersionV2 is blank - GitVersion bug.
+        return !string.IsNullOrWhiteSpace(GitVersion.NuGetVersionV2)
+            ? GitVersion.NuGetVersionV2
+            : GitVersion.FullSemVer?.Split('+')[0] ?? throw new Exception("Cannot determine NuGet version.");
     }
 
     private Configuration GetBranchBasedConfiguration()
