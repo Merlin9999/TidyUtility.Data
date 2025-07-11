@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TidyUtility.Tests", "TidyUtility.Tests\TidyUtility.Tests.csproj", "{692662FF-7B69-405D-824F-37ABF54A1CD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TidyUtility.Data", "TidyUtility.Data\TidyUtility.Data.csproj", "{CA492AD4-9281-D832-3955-D0F6D42ADA81}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{692662FF-7B69-405D-824F-37ABF54A1CD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{692662FF-7B69-405D-824F-37ABF54A1CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{692662FF-7B69-405D-824F-37ABF54A1CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{692662FF-7B69-405D-824F-37ABF54A1CD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA492AD4-9281-D832-3955-D0F6D42ADA81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA492AD4-9281-D832-3955-D0F6D42ADA81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA492AD4-9281-D832-3955-D0F6D42ADA81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA492AD4-9281-D832-3955-D0F6D42ADA81}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4231A9D4-54E0-44D4-AE2E-E974331A33E7}
+	EndGlobalSection
+EndGlobal
